@@ -19,69 +19,52 @@
 
         <View
             android:id="@+id/bgControl"
-            android:layout_width="70dp"
-            android:layout_height="0dp"
-            android:background="@color/black_50p"
+            android:layout_width="0dp"
+            android:layout_height="144dp"
+            android:background="@color/black_20p"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.zcs.app.camerax.widget.ScalableImageView
+            android:id="@+id/btnSwitch"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_margin="10dp"
+            android:onClick="switchCamera"
+            android:padding="10dp"
+            android:src="@mipmap/ic_switch_camera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.zcs.app.camerax.widget.ScalableLinearLayout
-            android:id="@+id/btnSwitch"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/bgControl"
-            app:layout_constraintStart_toStartOf="@id/bgControl"
-            app:layout_constraintTop_toTopOf="@id/bgControl">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:onClick="switchCamera"
-                android:src="@mipmap/ic_switch_camera" />
-
-            <TextView
-                style="@style/View.TextView"
-                android:layout_marginTop="2dp"
-                android:text="切换"
-                android:textColor="@color/mWhite" />
-
-        </com.zcs.app.camerax.widget.ScalableLinearLayout>
-
         <com.zcs.app.camerax.widget.ScalableImageView
-            android:id="@+id/take"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:id="@+id/takePhoto"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:onClick="takePhoto"
             android:src="@drawable/bg_circle_white"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/takeVideo"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/bgControl"
             app:layout_constraintEnd_toEndOf="@id/bgControl"
             app:layout_constraintStart_toStartOf="@id/bgControl"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toTopOf="@id/bgControl" />
 
         <com.zcs.app.camerax.widget.RingProgressView
             android:id="@+id/takeVideo"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:onClick="startRecord"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/bgControl"
             app:layout_constraintEnd_toEndOf="@id/bgControl"
             app:layout_constraintStart_toStartOf="@id/bgControl"
-            app:layout_constraintTop_toBottomOf="@id/take" />
+            app:layout_constraintTop_toTopOf="@id/bgControl" />
 
         <com.zcs.app.camerax.widget.ScalableImageView
             android:id="@+id/ivVideoStatus"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:src="@drawable/bg_circle_red_camera"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/takeVideo"
             app:layout_constraintEnd_toEndOf="@id/takeVideo"
             app:layout_constraintStart_toStartOf="@id/takeVideo"
@@ -89,36 +72,38 @@
 
         <com.zcs.app.camerax.widget.ScalableImageView
             android:id="@+id/ivVideoStatusRecording"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/bg_round_red"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/takeVideo"
             app:layout_constraintEnd_toEndOf="@id/takeVideo"
             app:layout_constraintStart_toStartOf="@id/takeVideo"
             app:layout_constraintTop_toTopOf="@id/takeVideo" />
 
-        <TextView
-            android:id="@+id/tvRecordStatus"
-            style="@style/View.TextView"
-            android:layout_marginTop="5dp"
-            android:text="录制"
-            android:textColor="@color/mWhite"
-            app:layout_constraintEnd_toEndOf="@id/takeVideo"
-            app:layout_constraintStart_toStartOf="@id/takeVideo"
-            app:layout_constraintTop_toBottomOf="@id/takeVideo" />
+        <com.zcs.app.camerax.widget.ScalableImageView
+            android:id="@+id/btnClose"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="closeCamera"
+            android:padding="10dp"
+            android:src="@mipmap/ic_arrow_down"
+            app:layout_constraintBottom_toBottomOf="@id/bgControl"
+            app:layout_constraintEnd_toStartOf="@id/takePhoto"
+            app:layout_constraintStart_toStartOf="@id/bgControl"
+            app:layout_constraintTop_toTopOf="@id/bgControl" />
 
         <TextView
             android:id="@+id/tvTimer"
             style="@style/View.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/mWhite"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/bgControl"
             app:layout_constraintEnd_toEndOf="@id/bgControl"
             app:layout_constraintStart_toStartOf="@id/bgControl"
+            app:layout_constraintTop_toBottomOf="@id/takeVideo"
             tools:text="00:00:00" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

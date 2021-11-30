@@ -1,4 +1,4 @@
-package com.zcs.app.camerax
+package com.zcs.app.camerax.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,9 +9,11 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.safframework.delegate.extras.extraDelegate
+import com.zcs.app.camerax.BuildConfig
 import com.zcs.app.camerax.base.BaseActivity
-import com.zcs.app.camerax.config.CameraxConfig
+import com.zcs.app.camerax.config.CustomCameraConfig
 import com.zcs.app.camerax.databinding.ActivityCameraXBinding
+import com.zcs.app.camerax.entity.MediaEntity
 import com.zcs.app.camerax.utils.LogUtil
 import java.io.File
 import java.text.SimpleDateFormat
@@ -23,7 +25,7 @@ class CameraXActivity : BaseActivity() {
         ActivityCameraXBinding.inflate(layoutInflater)
     }
 
-    val type: Int by extraDelegate("type", CameraxConfig.CAMERA_BOTH)
+    val mType: Int by extraDelegate("type", CustomCameraConfig.CAMERA_PHOTO)
 
     // 是否需要倒计时
     private val withTimeout: Boolean = true
@@ -33,17 +35,17 @@ class CameraXActivity : BaseActivity() {
 
     private val imageCapture by lazy(LazyThreadSafetyMode.NONE) {
         ImageCapture.Builder()
-            .setTargetAspectRatio(CameraxConfig.mAspectRatio)
+            .setTargetAspectRatio(CustomCameraConfig.mAspectRatio)
             // .setTargetRotation(binding.surfacePreview.display.rotation)
             .build()
     }
 
     private val videoCapture by lazy(LazyThreadSafetyMode.NONE) {
         VideoCapture.Builder()//录像用例配置
-            .setBitRate(CameraxConfig.mBitRate)
+            .setBitRate(CustomCameraConfig.mBitRate)
 //                .setAudioBitRate(CameraxConfig.mAudioBitRate)
 //                .setVideoFrameRate(CameraxConfig.mVideoFrameRate)
-            .setMaxResolution(CameraxConfig.mMaxResolution)
+            .setMaxResolution(CustomCameraConfig.mMaxResolution)
             // .setTargetResolution(Size(1280, 720))
             // .setTargetAspectRatio(CameraxConfig.mAspectRatio) //设置高宽比 不能和setTargetResolution共存
             // .setTargetRotation(binding.surfacePreview.display.rotation)//设置旋转角度
@@ -52,7 +54,7 @@ class CameraXActivity : BaseActivity() {
 
     private val preview by lazy(LazyThreadSafetyMode.NONE) {
         Preview.Builder()
-            .setTargetAspectRatio(CameraxConfig.mAspectRatio)
+            .setTargetAspectRatio(CustomCameraConfig.mAspectRatio)
             .build()
     }
 
@@ -62,7 +64,23 @@ class CameraXActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
         setContentView(binding.root)
+        initView()
         startCamera()
+    }
+
+    private fun initView() {
+        when (mType) {
+            CustomCameraConfig.CAMERA_PHOTO -> {
+                binding.takePhoto.visibility = View.VISIBLE
+                binding.takeVideo.visibility = View.INVISIBLE
+                binding.ivVideoStatus.visibility = View.INVISIBLE
+            }
+            CustomCameraConfig.CAMERA_VIDEO -> {
+                binding.takePhoto.visibility = View.INVISIBLE
+                binding.takeVideo.visibility = View.VISIBLE
+                binding.ivVideoStatus.visibility = View.VISIBLE
+            }
+        }
     }
 
     // 默认使用后置摄像头
@@ -92,14 +110,14 @@ class CameraXActivity : BaseActivity() {
             cameraProvider?.unbindAll()
             // 绑定前面用于预览和拍照的UseCase到相机上
             // camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-            when (CameraxConfig.mCameraType) {
-                CameraxConfig.CAMERA_PHOTO_ONLY -> {
+            when (mType) {
+                CustomCameraConfig.CAMERA_PHOTO -> {
                     cameraProvider?.bindToLifecycle(this, cameraSelector, preview, imageCapture)
                 }
-                CameraxConfig.CAMERA_VIDEO_ONLY -> {
+                CustomCameraConfig.CAMERA_VIDEO -> {
                     cameraProvider?.bindToLifecycle(this, cameraSelector, preview, videoCapture)
                 }
-                CameraxConfig.CAMERA_BOTH -> {
+                CustomCameraConfig.CAMERA_BOTH -> {
                     cameraProvider?.bindToLifecycle(
                         this,
                         cameraSelector,
@@ -150,6 +168,14 @@ class CameraXActivity : BaseActivity() {
                     // val msg = "Photo capture succeeded: $savedUri"
                     // 显示拍照内容
                     // binding.ivPic.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+
+                    LogUtil.d("图片保存成功 -->${output.savedUri}")
+                    LogUtil.d("图片保存成功 -->$imagePath")
+                    val intent = Intent()
+                    val media = MediaEntity(MediaEntity.PIC, imagePath)
+                    intent.putExtra("media", media)
+                    setResult(RESULT_OK, intent)
+                    finish()
                 }
             })
     }
@@ -166,7 +192,6 @@ class CameraXActivity : BaseActivity() {
         binding.btnSwitch.visibility = View.INVISIBLE// 录制过程中，不允许切换摄像头
         binding.ivVideoStatus.visibility = View.GONE
         binding.ivVideoStatusRecording.visibility = View.VISIBLE
-        binding.tvRecordStatus.text = "结束"
         v.tag = 1
         startTimer()
         // 拍照保存路径
@@ -177,11 +202,12 @@ class CameraXActivity : BaseActivity() {
         videoCapture.startRecording(outputOptions,
             ContextCompat.getMainExecutor(this),
             object : VideoCapture.OnVideoSavedCallback {
-                override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
-                    LogUtil.d("视频保存成功 -->${outputFileResults.savedUri}")
+                override fun onVideoSaved(output: VideoCapture.OutputFileResults) {
+                    LogUtil.d("视频保存成功 -->${output.savedUri}")
                     LogUtil.d("视频保存成功 -->$videoPath")
                     val intent = Intent()
-                    intent.putExtra("videoPath", videoPath)
+                    val media = MediaEntity(MediaEntity.VIDEO, videoPath)
+                    intent.putExtra("media", media)
                     setResult(RESULT_OK, intent)
                     finish()
                 }
@@ -236,5 +262,9 @@ class CameraXActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraProvider?.shutdown()
+    }
+
+    fun closeCamera(v: View) {
+        onBackPressed()
     }
 }
