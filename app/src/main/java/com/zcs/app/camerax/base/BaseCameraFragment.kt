@@ -133,11 +133,8 @@ abstract class BaseCameraFragment : Fragment() {
     }
 
     open fun onInit() {
-        binding.btnOpenCamera.setOnClickListener {
-            openCamera(bindCameraType())
-        }
-
         mItems = loadMediaList(bindCameraType())
+        mItems.add(0, File("ADD"))
     }
 
     abstract fun bindCameraType(): Int

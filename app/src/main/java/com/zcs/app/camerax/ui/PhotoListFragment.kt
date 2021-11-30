@@ -7,6 +7,7 @@ import com.zcs.app.camerax.R
 import com.zcs.app.camerax.adapter.CommonRecyclerAdapter
 import com.zcs.app.camerax.base.BaseCameraFragment
 import com.zcs.app.camerax.config.CustomCameraConfig
+import com.zcs.app.camerax.isAddCamera
 import java.io.File
 
 /**
@@ -24,10 +25,18 @@ class PhotoListFragment : BaseCameraFragment() {
         if (adapter == null) {
             adapter = object : CommonRecyclerAdapter<File>(R.layout.item_video_photo, mItems) {
                 override fun convert(holder: BaseViewHolder, item: File) {
+                    holder.setVisible(R.id.ivCameraAdd, item.isAddCamera())
                     val ivThumb = holder.getView<ImageView>(R.id.ivThumb)
-                    Glide.with(requireContext()).load(item.absolutePath).into(ivThumb)
+
+                    if (!item.isAddCamera()) {
+                        Glide.with(requireContext()).load(item.absolutePath).into(ivThumb)
+                    }
                     ivThumb.setOnClickListener {
-                        openPicture(item, holder.bindingAdapterPosition)
+                        if (item.isAddCamera()) {
+                            openCamera(bindCameraType())
+                        } else {
+                            openPicture(item, holder.bindingAdapterPosition)
+                        }
                     }
                 }
             }

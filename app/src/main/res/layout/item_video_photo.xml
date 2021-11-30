@@ -9,7 +9,8 @@
         android:id="@+id/ivThumb"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="5dp"
+        android:layout_margin="3dp"
+        android:background="#AAAAAA"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
@@ -18,9 +19,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/ivCameraAdd"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@mipmap/ic_camera_add"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivThumb"
+        app:layout_constraintEnd_toEndOf="@id/ivThumb"
+        app:layout_constraintStart_toStartOf="@id/ivThumb"
+        app:layout_constraintTop_toTopOf="@id/ivThumb"
+        tools:visibility="visible" />
+
+    <ImageView
         android:id="@+id/ivPlay"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
         android:src="@mipmap/ic_video_play"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/ivThumb"
