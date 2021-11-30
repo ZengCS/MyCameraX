@@ -13,7 +13,6 @@ import com.zcs.app.camerax.BuildConfig
 import com.zcs.app.camerax.base.BaseActivity
 import com.zcs.app.camerax.config.CustomCameraConfig
 import com.zcs.app.camerax.databinding.ActivityCameraXBinding
-import com.zcs.app.camerax.entity.MediaEntity
 import com.zcs.app.camerax.utils.LogUtil
 import java.io.File
 import java.text.SimpleDateFormat
@@ -172,8 +171,7 @@ class CameraXActivity : BaseActivity() {
                     LogUtil.d("图片保存成功 -->${output.savedUri}")
                     LogUtil.d("图片保存成功 -->$imagePath")
                     val intent = Intent()
-                    val media = MediaEntity(MediaEntity.PIC, imagePath)
-                    intent.putExtra("media", media)
+                    intent.putExtra("path", imagePath)
                     setResult(RESULT_OK, intent)
                     finish()
                 }
@@ -206,8 +204,7 @@ class CameraXActivity : BaseActivity() {
                     LogUtil.d("视频保存成功 -->${output.savedUri}")
                     LogUtil.d("视频保存成功 -->$videoPath")
                     val intent = Intent()
-                    val media = MediaEntity(MediaEntity.VIDEO, videoPath)
-                    intent.putExtra("media", media)
+                    intent.putExtra("path", videoPath)
                     setResult(RESULT_OK, intent)
                     finish()
                 }

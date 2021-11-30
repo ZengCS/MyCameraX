@@ -18,7 +18,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zcs.app.camerax.adapter.CommonRecyclerAdapter
 import com.zcs.app.camerax.config.CustomCameraConfig
 import com.zcs.app.camerax.databinding.FragmentVideoPhotoBinding
-import com.zcs.app.camerax.entity.MediaEntity
 import com.zcs.app.camerax.isImage
 import com.zcs.app.camerax.isVideo
 import com.zcs.app.camerax.ui.CameraXActivity
@@ -52,13 +51,10 @@ abstract class BaseCameraFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == Activity.RESULT_OK) {
                     val intent: Intent? = it.data
-                    val media: MediaEntity? = intent?.getSerializableExtra("media") as MediaEntity?
-                    media?.let {
-                        val path = media.path
-                        if (!TextUtils.isEmpty(path)) {
-                            // showMessage("拍摄成功：$path")
-                            notifyItemInserted(path)
-                        }
+                    val path = intent?.getStringExtra("path")
+                    if (!TextUtils.isEmpty(path)) {
+                        // showMessage("拍摄成功：$path")
+                        notifyItemInserted(path!!)
                     }
                 }
             }

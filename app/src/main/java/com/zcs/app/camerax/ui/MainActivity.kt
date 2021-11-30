@@ -2,23 +2,14 @@ package com.zcs.app.camerax.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.zcs.app.camerax.base.BaseActivity
-import com.zcs.app.camerax.config.CustomCameraConfig
 import com.zcs.app.camerax.databinding.ActivityMainBinding
-import com.zcs.app.camerax.entity.MediaEntity
-import com.zcs.app.camerax.utils.LogUtil
 
 @SuppressLint("RestrictedApi")
 class MainActivity : BaseActivity() {
