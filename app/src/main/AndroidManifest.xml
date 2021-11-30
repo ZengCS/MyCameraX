@@ -4,9 +4,13 @@
     <!-- 具备摄像头 -->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.autofocus" />
-    <uses-feature android:name="android.hardware.camera.any" /> <!-- 相机权限 -->
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- 录音权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 读写外部存储权限 -->
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <!-- 相机权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 录音权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 读写外部存储权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -18,7 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/FullScreenAppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +35,8 @@
         <activity
             android:name=".CameraXActivity"
             android:configChanges="orientation|keyboard|screenSize|screenLayout"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <!--FileProvider-->
         <provider
