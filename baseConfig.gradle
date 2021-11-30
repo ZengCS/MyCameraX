@@ -1,0 +1,26 @@
+// 统一版本控制
+ext {
+    // 通用版本信息
+    android = [
+            compileSdkVersion: 28,
+            buildToolsVersion: "28.0.3",
+            minSdkVersion    : 21,
+            targetSdkVersion : 28,
+    ]
+
+    //统一签名信息
+    signing = [
+            pStoreFile       : "../key/sxjy_knox.keystore",
+            pStorePassword   : "sxjyknox123",
+            pKeyAlias        : "sxw_knox",
+            pKeyPassword     : "sxjy123456",
+            pV1SigningEnabled: true,
+            pV2SigningEnabled: true,
+    ]
+
+    // 发布版本相关
+    versionReleaseDate = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+8:00"))
+    //万位 千位 百位与appVersionName号码对应，十位 个位为开发阶段使用，建议发布正式版本时后两位均设置为0
+    appVersionCode = 1_0_0_01
+    appVersionName = "V1.0.0_" + versionReleaseDate + "_build_" + appVersionCode
+}
