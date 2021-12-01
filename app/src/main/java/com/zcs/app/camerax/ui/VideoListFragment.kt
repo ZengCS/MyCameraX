@@ -39,10 +39,11 @@ class VideoListFragment : BaseCameraFragment() {
                         val cacheFirstFrame =
                             LoadVideoFirstFrameTask.getCacheFirstFrame(path)
                         if (TextUtils.isEmpty(cacheFirstFrame)) { // 本地没有缓存
-                            LoadVideoFirstFrameTask { bitmap: Bitmap? ->
-                                // 显示第一帧图片
-                                if (bitmap != null) ivThumb.setImageBitmap(bitmap)
-                            }.execute(path)
+                            LoadVideoFirstFrameTask(object : LoadVideoFirstFrameTask.Callback {
+                                override fun onPostExecute(bitmap: Bitmap?) {
+                                    if (bitmap != null) ivThumb.setImageBitmap(bitmap)
+                                }
+                            }).execute(path)
                         } else {
                             Glide.with(requireContext()).load(cacheFirstFrame).into(ivThumb)
                         }
