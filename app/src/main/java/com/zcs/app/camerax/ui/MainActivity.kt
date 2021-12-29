@@ -2,6 +2,7 @@ package com.zcs.app.camerax.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -33,6 +34,9 @@ class MainActivity : BaseActivity() {
                 // 授权失败
                 showMessage("授权失败，无法读取相册。", true)
             }
+        }
+        binding.btnRoundImg.setOnClickListener {
+            startActivity(Intent(this, RoundImageActivity::class.java))
         }
     }
 

@@ -40,6 +40,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenAppTheme" />
 
+        <activity
+            android:name=".ui.RoundImageActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <!--FileProvider-->
         <provider
             android:name="androidx.core.content.FileProvider"
